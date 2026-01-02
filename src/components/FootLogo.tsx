@@ -18,11 +18,7 @@ const FootLogo = ({ size = "md", showText = true, className }: FootLogoProps) =>
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div className="neu-circle p-3 bg-primary/10">
-        <Footprints 
-          size={sizes[size].icon} 
-          className="text-primary" 
-          strokeWidth={1.5}
-        />
+       <img src="/logo.png" alt="" style={{ width: sizes.lg.icon}} />
       </div>
       {showText && (
         <div className="flex flex-col">
