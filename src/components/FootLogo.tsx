@@ -14,6 +14,7 @@ const FootLogo = ({ size = "md", showText = true, className }: FootLogoProps) =>
     lg: { icon: 48, text: "text-2xl" },
     xl: { icon: 64, text: "text-3xl" },
   };
+  
 
   return (
     <div className={cn("flex items-center gap-3", className)}>
