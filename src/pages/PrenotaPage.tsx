@@ -3,6 +3,9 @@ import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuInput } from "@/components/ui/neu-input";
 import { NeuTextarea } from "@/components/ui/neu-textarea";
+import { useCreateCliente } from "@/hooks/useClienti";
+import { useCreateAppuntamento } from "@/hooks/useAppuntamenti";
+import { ClienteInsert, AppuntamentoInsert } from "@/types/database";
 import { 
   Calendar,
   Clock,
@@ -14,7 +17,6 @@ import {
   AlertCircle,
   Footprints
 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 
 const services = [
   "Prima Visita",
@@ -33,7 +35,6 @@ const timeSlots = [
 ];
 
 const PrenotaPage = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     nome: "",
     cognome: "",
@@ -44,8 +45,11 @@ const PrenotaPage = () => {
     orario: "",
     note: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const createClienteMutation = useCreateCliente();
+  const createAppuntamentoMutation = useCreateAppuntamento();
+  const isSubmitting = createClienteMutation.isPending || createAppuntamentoMutation.isPending;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,18 +57,35 @@ const PrenotaPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
+      
+    try {
+      // Step 1: Create cliente
+      const clienteData: ClienteInsert = {
+        nome: formData.nome,
+        cognome: formData.cognome,
+        email: formData.email,
+        telefono: formData.telefono,
+      };
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+      const clienteResponse = await createClienteMutation.mutateAsync(clienteData);
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    
-    toast({
-      title: "Richiesta inviata!",
-      description: "Ti contatteremo presto per confermare l'appuntamento.",
-    });
+      // Step 2: Create appuntamento
+      const appuntamentoData: AppuntamentoInsert = {
+        id_cliente: clienteResponse.id,
+        servizio: formData.servizio,
+        data_appuntamento: formData.data,
+        ora_appuntamento: formData.orario,
+        note: formData.note || null,
+        stato: "in_attesa",
+      };
+
+      await createAppuntamentoMutation.mutateAsync(appuntamentoData);
+
+      // Success - show message
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("Errore nella prenotazione:", error);
+    }
   };
 
   if (isSubmitted) {

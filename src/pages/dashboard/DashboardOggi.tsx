@@ -14,11 +14,19 @@ const DashboardOggi = () => {
   const completedAppointments = appuntamentiOggi?.filter(a => a.stato === "completato") || [];
 
   const handleConfirm = async (id: string) => {
-    await updateAppuntamento.mutateAsync({ id, stato: "confermato" });
+    try {
+      await updateAppuntamento.mutateAsync({ id, stato: "confermato" });
+    } catch (error) {
+      console.error("Errore nella conferma:", error);
+    }
   };
 
   const handleReject = async (id: string) => {
-    await updateAppuntamento.mutateAsync({ id, stato: "annullato" });
+    try {
+      await updateAppuntamento.mutateAsync({ id, stato: "annullato" });
+    } catch (error) {
+      console.error("Errore nel rifiuto:", error);
+    }
   };
 
   return (
@@ -140,16 +148,18 @@ const DashboardOggi = () => {
                       variant="primary" 
                       className="flex-1 text-xs"
                       onClick={() => handleConfirm(apt.id)}
+                      disabled={updateAppuntamento.isPending}
                     >
-                      Conferma
+                      {updateAppuntamento.isPending ? "..." : "Conferma"}
                     </NeuButton>
                     <NeuButton 
                       size="sm" 
                       variant="ghost" 
                       className="flex-1 text-xs"
                       onClick={() => handleReject(apt.id)}
+                      disabled={updateAppuntamento.isPending}
                     >
-                      Rifiuta
+                      {updateAppuntamento.isPending ? "..." : "Rifiuta"}
                     </NeuButton>
                   </div>
                 </div>

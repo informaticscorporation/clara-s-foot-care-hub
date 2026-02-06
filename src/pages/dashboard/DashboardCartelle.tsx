@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { jsPDF } from "jspdf";
 import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { Search, FolderOpen, FileText, Upload, Download, Trash2, ChevronRight, Loader2, FilePlus, FileCheck } from "lucide-react";
@@ -64,31 +65,107 @@ const DashboardCartelle = () => {
     }
   };
 
-  const handleSavePrescrizione = async (titolo: string, contenuto: string) => {
+  const handleSavePrescrizione = async (titolo: string, contenuto: string, giorni: number, medico: string) => {
     if (!selectedCliente) return;
     
-    // Create PDF from prescription content
-    const pdfContent = `
-PRESCRIZIONE MEDICA
-==================
-
-Paziente: ${selectedCliente.nome} ${selectedCliente.cognome}
-Data: ${new Date().toLocaleDateString('it-IT')}
-
-Titolo: ${titolo}
-
-${contenuto}
-
----
-Firma del Medico: ____________________
-    `.trim();
-    
-    // Create blob and upload
-    const blob = new Blob([pdfContent], { type: 'text/plain' });
-    const file = new File([blob], `prescrizione_${Date.now()}.txt`, { type: 'text/plain' });
-    
-    await uploadFile.mutateAsync({ clienteId: selectedCliente.id, file });
-    toast.success("Prescrizione salvata nella cartella clinica");
+    try {
+      // Calcola data di validità
+      const dataCreazione = new Date();
+      const dataScadenza = new Date(dataCreazione);
+      dataScadenza.setDate(dataScadenza.getDate() + giorni);
+      
+      // Crea PDF
+      const doc = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4"
+      });
+      
+      // Stili e colori
+      const primaryColor = [99, 102, 241]; // indigo
+      const textColor = [50, 50, 50];
+      const lightGray = [200, 200, 200];
+      
+      // Intestazione
+      doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      doc.rect(0, 0, 210, 35, "F");
+      
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(24);
+      doc.setFont("helvetica", "bold");
+      doc.text("PRESCRIZIONE MEDICA", 20, 20);
+      
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+      doc.text("Studio di Podologia Clara", 20, 28);
+      
+      // Contenuto principale
+      let yPosition = 50;
+      
+      doc.setTextColor(...textColor);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "bold");
+      doc.text("PAZIENTE", 20, yPosition);
+      yPosition += 8;
+      
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(`${selectedCliente.cognome} ${selectedCliente.nome}`, 20, yPosition);
+      doc.text(`Email: ${selectedCliente.email}`, 20, yPosition + 6);
+      doc.text(`Telefono: ${selectedCliente.telefono}`, 20, yPosition + 12);
+      
+      yPosition += 25;
+      
+      // Data
+      doc.setFont("helvetica", "bold");
+      doc.text("DATA E VALIDITÀ", 20, yPosition);
+      yPosition += 8;
+      
+      doc.setFont("helvetica", "normal");
+      doc.text(`Emessa: ${dataCreazione.toLocaleDateString('it-IT')}`, 20, yPosition);
+      doc.text(`Valida fino a: ${dataScadenza.toLocaleDateString('it-IT')} (${giorni} giorni)`, 20, yPosition + 6);
+      
+      yPosition += 20;
+      
+      // Titolo prescrizione
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.text(titolo, 20, yPosition);
+      yPosition += 10;
+      
+      // Contenuto prescrizione
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      const contenutoSplitato = doc.splitTextToSize(contenuto, 170);
+      doc.text(contenutoSplitato, 20, yPosition);
+      
+      yPosition += (contenutoSplitato.length * 5) + 15;
+      
+      // Firma con nome medico
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.text("Firma del Medico: _________________________", 20, yPosition + 30);
+      doc.text(medico, 20, yPosition + 38);
+      
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(lightGray[0], lightGray[1], lightGray[2]);
+      doc.text(
+        `Generato il ${new Date().toLocaleString('it-IT')}`,
+        20,
+        doc.internal.pageSize.height - 10
+      );
+      
+      // Salva il PDF come file
+      const pdfBlob = doc.output("blob");
+      const file = new File([pdfBlob], `prescrizione_${selectedCliente.cognome}_${Date.now()}.pdf`, { type: 'application/pdf' });
+      
+      await uploadFile.mutateAsync({ clienteId: selectedCliente.id, file });
+      toast.success("Prescrizione salvata nella cartella clinica");
+    } catch (error) {
+      console.error("Errore nella generazione della prescrizione:", error);
+      toast.error("Errore nella generazione del PDF");
+    }
   };
 
   const formatFileSize = (bytes: number) => {

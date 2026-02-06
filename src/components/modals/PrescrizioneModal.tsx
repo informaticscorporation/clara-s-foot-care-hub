@@ -5,18 +5,26 @@ import { NeuButton } from "@/components/ui/neu-button";
 interface PrescrizioneModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSave: (titolo: string, contenuto: string) => void;
+  onSave: (titolo: string, contenuto: string, giorni: number, medico: string) => void;
 }
 
 const PrescrizioneModal = ({ open, onOpenChange, onSave }: PrescrizioneModalProps) => {
   const [titolo, setTitolo] = useState("");
   const [contenuto, setContenuto] = useState("");
+  const [giorni, setGiorni] = useState(7);
+  const [medico, setMedico] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(titolo, contenuto);
+    if (!medico.trim()) {
+      alert("Inserisci il nome/cognome del medico");
+      return;
+    }
+    onSave(titolo, contenuto, giorni, medico);
     setTitolo("");
     setContenuto("");
+    setGiorni(7);
+    setMedico("");
     onOpenChange(false);
   };
 
@@ -39,6 +47,31 @@ const PrescrizioneModal = ({ open, onOpenChange, onSave }: PrescrizioneModalProp
               required
               className="neu-input w-full px-4 py-3 rounded-xl"
               placeholder="Es. Prescrizione plantari"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Validità (giorni)</label>
+            <input
+              type="number"
+              value={giorni}
+              onChange={(e) => setGiorni(Math.max(1, parseInt(e.target.value) || 1))}
+              min={1}
+              max={365}
+              className="neu-input w-full px-4 py-3 rounded-xl"
+              placeholder="Numero di giorni"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-foreground mb-2">Medico</label>
+            <input
+              type="text"
+              value={medico}
+              onChange={(e) => setMedico(e.target.value)}
+              required
+              className="neu-input w-full px-4 py-3 rounded-xl"
+              placeholder="Nome e Cognome del medico"
             />
           </div>
           
