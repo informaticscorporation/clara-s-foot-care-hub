@@ -93,7 +93,7 @@ export const useDeleteCliente = () => {
       const { data: appuntamenti, error: checkError } = await supabase
         .from('appuntamenti')
         .select('id')
-        .eq('cliente_id', id);
+        .eq('id_cliente', id);
       
       if (checkError) throw checkError;
       
