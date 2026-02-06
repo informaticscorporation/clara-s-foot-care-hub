@@ -89,6 +89,21 @@ export const useDeleteCliente = () => {
   
   return useMutation({
     mutationFn: async (id: string) => {
+      // Controlla se il cliente ha appuntamenti associati
+      const { data: appuntamenti, error: checkError } = await supabase
+        .from('appuntamenti')
+        .select('id')
+        .eq('cliente_id', id);
+      
+      if (checkError) throw checkError;
+      
+      if (appuntamenti && appuntamenti.length > 0) {
+        const error = new Error(
+          `Impossibile eliminare il cliente: ha ${appuntamenti.length} appuntamento${appuntamenti.length > 1 ? 'i' : ''} associato${appuntamenti.length > 1 ? 'i' : ''}. Elimina prima gli appuntamenti.`
+        );
+        throw error;
+      }
+      
       const { error } = await supabase
         .from('clienti')
         .delete()
