@@ -41,11 +41,7 @@ export const PublicNavbar = () => {
                 {link.label}
               </Link>
             ))}
-            <Link to="/dashboard" className="ml-4">
-              <NeuButton variant="primary" size="sm">
-                Area Riservata
-              </NeuButton>
-            </Link>
+           
           </div>
 
           {/* Mobile Menu Button */}
@@ -76,11 +72,7 @@ export const PublicNavbar = () => {
                   {link.label}
                 </Link>
               ))}
-              <Link to="/dashboard" onClick={() => setIsOpen(false)}>
-                <NeuButton variant="primary" className="w-full mt-4">
-                  Area Riservata
-                </NeuButton>
-              </Link>
+             
             </div>
           </div>
         )}
@@ -88,3 +80,4 @@ export const PublicNavbar = () => {
     </nav>
   );
 };
+
