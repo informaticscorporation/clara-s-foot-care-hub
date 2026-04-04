@@ -1,6 +1,7 @@
 import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { Link } from "react-router-dom";
+import { Seo } from "@/components/Seo";
 import { 
   GraduationCap, 
   Award, 
@@ -39,6 +40,11 @@ const values = [
 const ChiSiamoPage = () => {
   return (
     <div className="animate-fade-in">
+      <Seo
+        title="Podologa a Cardito, Caserta e Casagiove | Chi Sono"
+        description="Scopri l'esperienza professionale di Clara Maria Di Nofa, podologa specializzata per trattamenti locali tra Napoli e Caserta."
+        path="/chi-siamo"
+      />
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -58,7 +64,7 @@ const ChiSiamoPage = () => {
                 Sono una podologa professionista con oltre 10 anni di esperienza 
                 nel campo della cura del piede. La mia passione per questo lavoro 
                 nasce dalla volontà di aiutare le persone a ritrovare il benessere 
-                partendo dalle fondamenta: i piedi.
+                partendo dalle fondamenta: i piedi, con attenzione ai pazienti di Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere.
               </p>
               
               <p className="text-muted-foreground leading-relaxed">

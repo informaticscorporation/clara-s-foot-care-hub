@@ -5,9 +5,15 @@ interface FootLogoProps {
   size?: "sm" | "md" | "lg" | "xl";
   showText?: boolean;
   className?: string;
+  imageAlt?: string;
 }
 
-const FootLogo = ({ size = "md", showText = true, className }: FootLogoProps) => {
+const FootLogo = ({
+  size = "md",
+  showText = true,
+  className,
+  imageAlt = "Logo podologa Clara Maria Di Nofa - foot care Cardito e Caserta",
+}: FootLogoProps) => {
   const sizes = {
     sm: { icon: 24, text: "text-lg" },
     md: { icon: 32, text: "text-xl" },
@@ -19,7 +25,13 @@ const FootLogo = ({ size = "md", showText = true, className }: FootLogoProps) =>
   return (
     <div className={cn("flex items-center gap-3", className)}>
       <div className="neu-circle p-3 bg-primary/10">
-       <img src="/logo.png" alt="" style={{ width: sizes.lg.icon}} />
+        <img
+          src="/logo.png"
+          alt={imageAlt}
+          loading="lazy"
+          decoding="async"
+          style={{ width: sizes[size].icon }}
+        />
       </div>
       {showText && (
         <div className="flex flex-col">

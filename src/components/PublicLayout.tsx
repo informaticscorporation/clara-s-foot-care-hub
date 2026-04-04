@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { PublicNavbar } from "./PublicNavbar";
 import { PublicFooter } from "./PublicFooter";
+import { WhatsAppButton } from "./WhatsAppButton";
 
 export const PublicLayout = () => {
   return (
@@ -9,6 +10,7 @@ export const PublicLayout = () => {
       <main className="flex-1 pt-20">
         <Outlet />
       </main>
+      <WhatsAppButton />
       <PublicFooter />
     </div>
   );
