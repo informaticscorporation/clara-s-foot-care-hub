@@ -82,7 +82,7 @@ export const PublicFooter = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone size={18} className="text-primary shrink-0" />
-                <span>+33 7 92 02 06 29</span>
+                <span>+39 379 202 0629</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail size={18} className="text-primary shrink-0" />

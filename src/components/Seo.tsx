@@ -62,7 +62,7 @@ export const Seo = ({ title, description, path }: SeoProps) => {
       name: "Clara Maria Di Nofa - Podologa",
       description,
       areaServed: targetLocations,
-      telephone: "+3933792020629",
+      telephone: "+393792020629",
       vatID: "IT04882250618",
       url: canonical,
       priceRange: "€€",

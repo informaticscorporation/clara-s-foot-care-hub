@@ -24,8 +24,8 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Telefono",
-    content: "+33 7 92 02 06 29",
-    link: "tel:+33792020629",
+    content: "+39 379 202 0629",
+    link: "tel:+393792020629",
   },
   {
     icon: Mail,
