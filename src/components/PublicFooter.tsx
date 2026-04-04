@@ -1,12 +1,27 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FootLogo } from "./FootLogo";
 import { Phone, Mail, MapPin, Clock, Instagram, Facebook } from "lucide-react";
+import { targetLocations } from "@/data/localSeo";
 
 export const PublicFooter = () => {
+  useEffect(() => {
+    const iubendaScriptId = "iubenda-loader-script";
+    if (document.getElementById(iubendaScriptId)) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.id = iubendaScriptId;
+    script.src = "https://cdn.iubenda.com/iubenda.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <footer className="bg-muted/50 mt-20">
       <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           {/* Logo & Description */}
           <div className="space-y-4">
             <FootLogo size="md" />
@@ -63,16 +78,29 @@ export const PublicFooter = () => {
             <ul className="space-y-3">
               <li className="flex items-start gap-3 text-sm text-muted-foreground">
                 <MapPin size={18} className="text-primary mt-0.5 shrink-0" />
-                <span>Via Roma 123, 00100 Roma (RM)</span>
+                <span>Cardito (NA) - Servizio su appuntamento nelle province di Napoli e Caserta</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Phone size={18} className="text-primary shrink-0" />
-                <span>+39 333 123 4567</span>
+                <span>+33 7 92 02 06 29</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail size={18} className="text-primary shrink-0" />
                 <span>info@claramariapodologa.it</span>
               </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-heading font-semibold text-foreground mb-4">
+              Zone Servite
+            </h4>
+            <ul className="space-y-3">
+              {targetLocations.map((location) => (
+                <li key={location} className="text-sm text-muted-foreground">
+                  {location}
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -100,8 +128,14 @@ export const PublicFooter = () => {
           </div>
         </div>
 
-        <div className="border-t border-border mt-12 pt-8 text-center text-sm text-muted-foreground">
+        <div className="border-t border-border mt-12 pt-8 text-center text-sm text-muted-foreground space-y-2">
           <p>© {new Date().getFullYear()} Clara Maria Di Nofa - Podologa. Tutti i diritti riservati.</p>
+          <p>P.IVA: 04882250618</p>
+          <p className="flex flex-wrap items-center justify-center gap-3">
+            <a href="https://www.iubenda.com/privacy-policy/96889819" className="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+            <span>•</span>
+            <a href="https://www.iubenda.com/privacy-policy/96889819/cookie-policy" className="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy">Cookie Policy</a>
+          </p>
         </div>
       </div>
     </footer>

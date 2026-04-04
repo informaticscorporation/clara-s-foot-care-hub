@@ -3,6 +3,7 @@ import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuInput } from "@/components/ui/neu-input";
 import { NeuTextarea } from "@/components/ui/neu-textarea";
+import { Seo } from "@/components/Seo";
 import { 
   MapPin, 
   Phone, 
@@ -17,14 +18,14 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Indirizzo",
-    content: "Via Roma 123, 00100 Roma (RM)",
+    content: "Cardito (NA) - Ricevo su appuntamento",
     link: "https://maps.google.com",
   },
   {
     icon: Phone,
     title: "Telefono",
-    content: "+39 333 123 4567",
-    link: "tel:+393331234567",
+    content: "+33 7 92 02 06 29",
+    link: "tel:+33792020629",
   },
   {
     icon: Mail,
@@ -65,6 +66,11 @@ const ContattiPage = () => {
 
   return (
     <div className="animate-fade-in">
+      <Seo
+        title="Contatti Podologa Cardito e Caserta | Prenota una Visita"
+        description="Contatta Clara Maria Di Nofa per trattamenti podologici e pedicure medico a Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere."
+        path="/contatti"
+      />
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -80,8 +86,7 @@ const ContattiPage = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground">
-              Hai domande o vuoi maggiori informazioni? Contattaci in qualsiasi 
-              momento, saremo felici di aiutarti.
+              Hai domande o vuoi maggiori informazioni sui servizi di cura piedi a Cardito, Caserta e comuni limitrofi? Contattaci in qualsiasi momento.
             </p>
           </div>
 
@@ -227,7 +232,7 @@ const ContattiPage = () => {
                   Mappa interattiva disponibile dopo l'integrazione
                 </p>
                 <p className="text-sm text-muted-foreground mt-2">
-                  Via Roma 123, 00100 Roma (RM)
+                  Servizio attivo tra Cardito (NA), Caserta (CE), Casagiove (CE), Frattamaggiore (NA) e Santa Maria Capua Vetere (CE)
                 </p>
               </div>
             </div>

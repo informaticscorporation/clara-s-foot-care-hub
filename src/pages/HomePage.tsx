@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuCard } from "@/components/ui/neu-card";
 import { FootLogo } from "@/components/FootLogo";
+import { Seo } from "@/components/Seo";
+import { targetLocations } from "@/data/localSeo";
 import { 
   Footprints, 
   Heart, 
@@ -58,6 +60,11 @@ const testimonials = [
 const HomePage = () => {
   return (
     <div className="animate-fade-in">
+      <Seo
+        title="Foot Care Cardito e Caserta | Podologa Clara Maria Di Nofa"
+        description="Servizi di foot care professionale a Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere. Prenota la tua visita podologica."
+        path="/"
+      />
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         <div className="container mx-auto px-4">
@@ -69,14 +76,14 @@ const HomePage = () => {
               </div>
               
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                Il benessere dei tuoi{" "}
+                Foot care a Cardito e Caserta: il benessere dei tuoi{" "}
                 <span className="text-primary">piedi</span>{" "}
                 inizia qui
               </h1>
               
               <p className="text-lg text-muted-foreground leading-relaxed max-w-lg">
                 Sono Clara Maria Di Nofa, podologa professionista. 
-                Offro trattamenti personalizzati per la salute e il benessere dei tuoi piedi.
+                Offro trattamenti personalizzati per la salute e il benessere dei tuoi piedi tra Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere.
               </p>
               
               <div className="flex flex-wrap gap-4">
@@ -265,6 +272,27 @@ const HomePage = () => {
               </NeuCard>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-16 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <NeuCard variant="flat" className="p-8">
+            <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Zone Servite per Cura Piedi e Pedicure Medico
+            </h2>
+            <p className="text-muted-foreground mb-6">
+              Offriamo supporto podologico locale per chi cerca "cura piedi Caserta", "foot care Cardito" o "pedicure medico Frattamaggiore".
+            </p>
+            <ul className="grid md:grid-cols-2 gap-3">
+              {targetLocations.map((location) => (
+                <li key={location} className="flex items-center gap-2 text-foreground">
+                  <CheckCircle2 size={16} className="text-primary" />
+                  <span>{location}</span>
+                </li>
+              ))}
+            </ul>
+          </NeuCard>
         </div>
       </section>
 

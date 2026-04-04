@@ -1,6 +1,7 @@
 import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { Link } from "react-router-dom";
+import { Seo } from "@/components/Seo";
 import { 
   Footprints,
   Heart,
@@ -63,6 +64,11 @@ const additionalServices = [
 const ServiziPage = () => {
   return (
     <div className="animate-fade-in">
+      <Seo
+        title="Servizi Podologici a Caserta e Cardito | Cura Piedi"
+        description="Scopri i trattamenti podologici professionali disponibili a Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere."
+        path="/servizi"
+      />
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -73,7 +79,7 @@ const ServiziPage = () => {
             </div>
             
             <h1 className="font-heading text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Servizi{" "}
+              Servizi di cura piedi a Cardito, Caserta e dintorni{" "}
               <span className="text-primary">Podologici</span>{" "}
               Professionali
             </h1>
@@ -81,7 +87,7 @@ const ServiziPage = () => {
             <p className="text-lg text-muted-foreground">
               Offro una gamma completa di trattamenti per la salute e il benessere 
               dei tuoi piedi, utilizzando tecniche all'avanguardia e strumenti 
-              di ultima generazione.
+              di ultima generazione per pazienti di Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere.
             </p>
           </div>
         </div>

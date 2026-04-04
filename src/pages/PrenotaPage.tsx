@@ -3,6 +3,7 @@ import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuInput } from "@/components/ui/neu-input";
 import { NeuTextarea } from "@/components/ui/neu-textarea";
+import { Seo } from "@/components/Seo";
 import { useCreateCliente } from "@/hooks/useClienti";
 import { useCreateAppuntamento } from "@/hooks/useAppuntamenti";
 import { ClienteInsert, AppuntamentoInsert } from "@/types/database";
@@ -91,6 +92,11 @@ const PrenotaPage = () => {
   if (isSubmitted) {
     return (
       <div className="animate-fade-in py-20">
+        <Seo
+          title="Prenotazione Podologa Cardito e Caserta | Richiesta Inviata"
+          description="Richiesta appuntamento ricevuta per trattamenti podologici tra Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere."
+          path="/prenota"
+        />
         <div className="container mx-auto px-4">
           <NeuCard variant="convex" className="max-w-2xl mx-auto text-center py-16">
             <div className="neu-circle w-20 h-20 flex items-center justify-center mx-auto mb-6 bg-success/10">
@@ -135,6 +141,11 @@ const PrenotaPage = () => {
 
   return (
     <div className="animate-fade-in">
+      <Seo
+        title="Prenota Pedicure Medico a Frattamaggiore e Caserta"
+        description="Prenota online una visita podologica per cura piedi a Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere."
+        path="/prenota"
+      />
       {/* Hero Section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -151,7 +162,7 @@ const PrenotaPage = () => {
             
             <p className="text-lg text-muted-foreground">
               Compila il form sottostante per richiedere un appuntamento. 
-              Ti contatteremo per confermare la disponibilità.
+              Ti contatteremo per confermare la disponibilità nelle aree di Cardito, Caserta e provincia.
             </p>
           </div>
 
