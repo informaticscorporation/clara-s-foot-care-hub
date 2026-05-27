@@ -1,144 +1,14 @@
-import { useState } from "react";
 import { NeuCard } from "@/components/ui/neu-card";
 import { NeuButton } from "@/components/ui/neu-button";
-import { NeuInput } from "@/components/ui/neu-input";
-import { NeuTextarea } from "@/components/ui/neu-textarea";
 import { Seo } from "@/components/Seo";
-import { useCreateCliente } from "@/hooks/useClienti";
-import { useCreateAppuntamento } from "@/hooks/useAppuntamenti";
-import { ClienteInsert, AppuntamentoInsert } from "@/types/database";
 import { 
   Calendar,
-  Clock,
-  User,
-  Mail,
   Phone,
-  MessageSquare,
-  CheckCircle2,
-  AlertCircle,
+  MessageCircle,
   Footprints
 } from "lucide-react";
 
-const services = [
-  "Prima Visita",
-  "Trattamento Unghie Incarnite",
-  "Trattamento Micosi",
-  "Cura Piede Diabetico",
-  "Ortesi Plantari",
-  "Cura Calli e Duroni",
-  "Analisi del Passo",
-  "Altro",
-];
-
-const timeSlots = [
-  "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",
-  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00"
-];
-
 const PrenotaPage = () => {
-  const [formData, setFormData] = useState({
-    nome: "",
-    cognome: "",
-    email: "",
-    telefono: "",
-    servizio: "",
-    data: "",
-    orario: "",
-    note: "",
-  });
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const createClienteMutation = useCreateCliente();
-  const createAppuntamentoMutation = useCreateAppuntamento();
-  const isSubmitting = createClienteMutation.isPending || createAppuntamentoMutation.isPending;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-      
-    try {
-      // Step 1: Create cliente
-      const clienteData: ClienteInsert = {
-        nome: formData.nome,
-        cognome: formData.cognome,
-        email: formData.email,
-        telefono: formData.telefono,
-      };
-
-      const clienteResponse = await createClienteMutation.mutateAsync(clienteData);
-
-      // Step 2: Create appuntamento
-      const appuntamentoData: AppuntamentoInsert = {
-        id_cliente: clienteResponse.id,
-        servizio: formData.servizio,
-        data_appuntamento: formData.data,
-        ora_appuntamento: formData.orario,
-        note: formData.note || null,
-        stato: "in_attesa",
-      };
-
-      await createAppuntamentoMutation.mutateAsync(appuntamentoData);
-
-      // Success - show message
-      setIsSubmitted(true);
-    } catch (error) {
-      console.error("Errore nella prenotazione:", error);
-    }
-  };
-
-  if (isSubmitted) {
-    return (
-      <div className="animate-fade-in py-20">
-        <Seo
-          title="Prenotazione Podologa Cardito e Caserta | Richiesta Inviata"
-          description="Richiesta appuntamento ricevuta per trattamenti podologici tra Cardito, Caserta, Casagiove, Frattamaggiore e Santa Maria Capua Vetere."
-          path="/prenota"
-        />
-        <div className="container mx-auto px-4">
-          <NeuCard variant="convex" className="max-w-2xl mx-auto text-center py-16">
-            <div className="neu-circle w-20 h-20 flex items-center justify-center mx-auto mb-6 bg-success/10">
-              <CheckCircle2 size={40} className="text-success" />
-            </div>
-            <h1 className="font-heading text-3xl font-bold text-foreground mb-4">
-              Richiesta Inviata!
-            </h1>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Grazie per aver prenotato. Riceverai una conferma via email 
-              appena avremo verificato la disponibilità.
-            </p>
-            <div className="neu-card-sm p-4 max-w-sm mx-auto mb-8">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <AlertCircle size={16} className="text-primary" />
-                <span>La prenotazione è in attesa di conferma</span>
-              </div>
-            </div>
-            <NeuButton 
-              variant="primary"
-              onClick={() => {
-                setIsSubmitted(false);
-                setFormData({
-                  nome: "",
-                  cognome: "",
-                  email: "",
-                  telefono: "",
-                  servizio: "",
-                  data: "",
-                  orario: "",
-                  note: "",
-                });
-              }}
-            >
-              Nuova Prenotazione
-            </NeuButton>
-          </NeuCard>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="animate-fade-in">
       <Seo
@@ -161,131 +31,35 @@ const PrenotaPage = () => {
             </h1>
             
             <p className="text-lg text-muted-foreground">
-              Compila il form sottostante per richiedere un appuntamento. 
-              Ti contatteremo per confermare la disponibilità nelle aree di Cardito, Caserta e provincia.
+              La prenotazione avviene solo tramite chiamata o messaggio WhatsApp al numero{" "}
+              <strong>+39 379 202 0629</strong>.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Form */}
-            <div className="lg:col-span-2">
-              <NeuCard variant="flat">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <NeuInput
-                      id="nome"
-                      name="nome"
-                      label="Nome"
-                      placeholder="Il tuo nome"
-                      value={formData.nome}
-                      onChange={handleChange}
-                      required
-                    />
-                    <NeuInput
-                      id="cognome"
-                      name="cognome"
-                      label="Cognome"
-                      placeholder="Il tuo cognome"
-                      value={formData.cognome}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <NeuInput
-                      id="email"
-                      name="email"
-                      type="email"
-                      label="Email"
-                      placeholder="email@esempio.it"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                    />
-                    <NeuInput
-                      id="telefono"
-                      name="telefono"
-                      type="tel"
-                      label="Telefono"
-                      placeholder="+39 333 123 4567"
-                      value={formData.telefono}
-                      onChange={handleChange}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
-                      Servizio Richiesto
-                    </label>
-                    <select
-                      name="servizio"
-                      value={formData.servizio}
-                      onChange={handleChange}
-                      required
-                      className="neu-input w-full px-4 py-3 rounded-xl text-foreground bg-background border-none focus:outline-none"
-                    >
-                      <option value="">Seleziona un servizio</option>
-                      {services.map((service) => (
-                        <option key={service} value={service}>
-                          {service}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <NeuInput
-                      id="data"
-                      name="data"
-                      type="date"
-                      label="Data Preferita"
-                      value={formData.data}
-                      onChange={handleChange}
-                      min={new Date().toISOString().split('T')[0]}
-                      required
-                    />
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-2">
-                        Orario Preferito
-                      </label>
-                      <select
-                        name="orario"
-                        value={formData.orario}
-                        onChange={handleChange}
-                        required
-                        className="neu-input w-full px-4 py-3 rounded-xl text-foreground bg-background border-none focus:outline-none"
-                      >
-                        <option value="">Seleziona un orario</option>
-                        {timeSlots.map((slot) => (
-                          <option key={slot} value={slot}>
-                            {slot}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <NeuTextarea
-                    id="note"
-                    name="note"
-                    label="Note Aggiuntive (opzionale)"
-                    placeholder="Descrivi brevemente il motivo della visita o eventuali informazioni utili..."
-                    value={formData.note}
-                    onChange={handleChange}
-                  />
-
-                  <NeuButton 
-                    type="submit" 
-                    variant="primary" 
-                    size="lg" 
-                    className="w-full"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? "Invio in corso..." : "Richiedi Appuntamento"}
+          <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div>
+              <NeuCard variant="flat" className="h-full">
+                <h2 className="font-heading text-2xl font-semibold text-foreground mb-4">
+                  Contatta per Prenotare
+                </h2>
+                <p className="text-muted-foreground mb-8">
+                  Per fissare un appuntamento, chiama direttamente oppure invia
+                  un messaggio su WhatsApp. Ti risponderemo per concordare giorno e orario.
+                </p>
+                <div className="space-y-4">
+                  <NeuButton asChild variant="primary" size="lg" className="w-full">
+                    <a href="tel:+393792020629">
+                      <Phone size={18} className="mr-2" />
+                      Chiama +39 379 202 0629
+                    </a>
                   </NeuButton>
-                </form>
+                  <NeuButton asChild variant="secondary" size="lg" className="w-full">
+                    <a href="https://wa.me/393792020629" target="_blank" rel="noopener noreferrer">
+                      <MessageCircle size={18} className="mr-2" />
+                      Scrivi su WhatsApp
+                    </a>
+                  </NeuButton>
+                </div>
               </NeuCard>
             </div>
 
